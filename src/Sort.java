@@ -45,11 +45,11 @@ public class Sort {
 
     public static void main(String[] args){
 
-        /*int[] array = new int[]{3,2,1,7,6,9,0};
+        int[] array = new int[]{3,2,1,7,6,9,0};
         bubbleSort(array);
         //selectionSort(array);
         for(int i : array){
             System.out.println(i);
-        }*/
+        }
     }
 }
