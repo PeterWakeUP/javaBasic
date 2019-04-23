@@ -1,28 +1,53 @@
 import java.sql.Time;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class ThreadMain {
 
 
     public static void main(String[] args){
-        /*new Thread(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 System.out.println("匿名内部类Thread（Runnable）");
             }
-        }).start();*/
+        }).start();
 
-        /*MyThread myThread = new MyThread();
+        System.out.println("**********************************************************************");
+
+        MyThread myThread = new MyThread();
         myThread.start();
-        myThread.run();*/
+        myThread.run();
 
+        System.out.println("**********************************************************************");
 
-        /*MyRunnable myRunnable = new MyRunnable();
+        MyRunnable myRunnable = new MyRunnable();
+        new Thread(myRunnable).start();
         myRunnable.run();
-        new Thread(myRunnable).start();*/
+
+        System.out.println("**********************************************************************");
+
+        MyCallable myCallable = new MyCallable();
+        FutureTask<String> oneTask = new FutureTask<String>(myCallable);
+        new Thread(oneTask).start();
+
+        ExecutorService fixedThreadPool = Executors.newFixedThreadPool(3);
+
+        //submit方法有多重参数版本，及支持callable也能够支持runnable接口类型.
+        Future<String> future = fixedThreadPool.submit(myCallable);
+
+        future.isDone(); //return true,false 无阻塞
+        try {
+            String str = future.get(); // return 返回值，阻塞直到该线程运行结束
+            System.out.println(str);
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        } catch (ExecutionException e1) {
+            e1.printStackTrace();
+        }finally {
+            fixedThreadPool.shutdown();
+        }
+
+        System.out.println("**********************************************************************");
 
 
         ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
